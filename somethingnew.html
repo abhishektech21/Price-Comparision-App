@@ -1,0 +1,1891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopSmart - Best Price Comparison</title>
+    <style>
+        :root {
+            --primary: #047bd5;
+            --secondary: #2c3e50;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --light: #f5f7fa;
+            --dark: #2c3e50;
+            --white: #ffffff;
+            --accent: #ff6b6b;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* ============ NAVIGATION ============ */
+        .navbar {
+            background: var(--white);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 1px solid #ddd;
+            padding-left: 20px;
+        }
+        
+        #userGreeting {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        #logoutBtn {
+            padding: 8px 16px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        #logoutBtn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        /* ============ HERO SECTION ============ */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #0368b3 100%);
+            color: var(--white);
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -5%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+        
+        .hero-search {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .hero-search input {
+            padding: 15px 20px;
+            width: 450px;
+            max-width: 100%;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .hero-search input:focus {
+            outline: none;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transform: scale(1.02);
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary {
+            padding: 14px 35px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+        }
+        
+        .btn-secondary {
+            padding: 14px 35px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-secondary:hover {
+            background: white;
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        /* ============ CATEGORIES SECTION ============ */
+        .categories {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .section-subtitle {
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 1rem;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+        }
+        
+        .category-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 2px solid transparent;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            border-color: var(--primary);
+        }
+        
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        .category-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--dark);
+            margin-bottom: 8px;
+        }
+        
+        .category-count {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        /* ============ FEATURES SECTION ============ */
+        .features {
+            background: linear-gradient(135deg, rgba(4, 123, 213, 0.05) 0%, rgba(39, 174, 96, 0.05) 100%);
+            padding: 80px 20px;
+            margin: 60px 0;
+        }
+        
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        .feature-box {
+            text-align: center;
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, #0368b3 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 20px;
+            color: white;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--dark);
+        }
+        
+        .feature-text {
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+        
+        /* ============ DEALS SECTION ============ */
+        .deals {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        
+        .deals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .deal-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .deal-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .deal-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .deal-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--danger);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        
+        .deal-content {
+            padding: 20px;
+        }
+        
+        .deal-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        
+        .deal-price {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .deal-current {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--success);
+        }
+        
+        .deal-original {
+            color: #7f8c8d;
+            text-decoration: line-through;
+            font-size: 1rem;
+        }
+        
+        .deal-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .deal-btn:hover {
+            background: #0368b3;
+            transform: scale(1.02);
+        }
+        
+        /* ============ CTA SECTION ============ */
+        .cta {
+            background: linear-gradient(135deg, var(--primary) 0%, #0368b3 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin: 60px 20px;
+            border-radius: 12px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-weight: 800;
+        }
+        
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+        
+        /* ============ SEARCH RESULTS ============ */
+        .results-section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            display: none;
+        }
+        
+        .results-section.active {
+            display: block;
+        }
+        
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .back-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .results-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .result-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            border-top: 4px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .site-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .site-name {
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .product-name {
+            font-weight: 600;
+            margin: 10px 0;
+            color: var(--dark);
+            min-height: 50px;
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+        
+        .price-container {
+            margin: 15px 0;
+        }
+        
+        .current-price {
+            color: var(--success);
+            font-size: 1.8rem;
+            font-weight: 900;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .original-price {
+            text-decoration: line-through;
+            color: #7f8c8d;
+            font-size: 1rem;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        
+        .discount-badge {
+            display: inline-block;
+            background-color: var(--danger);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+        
+        .best-deal-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, var(--success) 0%, #1e8449 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .visit-btn {
+            display: inline-block;
+            padding: 12px 15px;
+            background-color: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s;
+            text-align: center;
+            width: 100%;
+            font-weight: 600;
+            margin-top: auto;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .visit-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .amazon { border-color: #ff9900; }
+        .flipkart { border-color: #047bd5; }
+        .ebay { border-color: #0064d2; }
+        .meesho { border-color: #f43397; }
+        .myntra { border-color: #ff3f6c; }
+        
+        .amazon .visit-btn { background-color: #ff9900; }
+        .flipkart .visit-btn { background-color: #047bd5; }
+        .ebay .visit-btn { background-color: #0064d2; }
+        .meesho .visit-btn { background-color: #f43397; }
+        .myntra .visit-btn { background-color: #ff3f6c; }
+        
+        .loading {
+            text-align: center;
+            grid-column: 1/-1;
+            padding: 40px;
+        }
+        
+        .loading-spinner {
+            border: 5px solid rgba(4, 123, 213, 0.1);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error {
+            color: var(--danger);
+            text-align: center;
+            padding: 20px;
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 8px;
+            grid-column: 1/-1;
+        }
+        
+        /* ============ AI ASSISTANT ============ */
+        .ai-assistant-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(147, 51, 234, 0.4);
+            transition: all 0.3s;
+            z-index: 999;
+            font-weight: 600;
+        }
+        
+        .ai-assistant-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(147, 51, 234, 0.6);
+        }
+        
+        .ai-assistant-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .ai-assistant-window {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            width: 380px;
+            max-height: 500px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 40px rgba(0, 0, 0, 0.16);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            border: 1px solid #e5e7eb;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        .ai-assistant-window.active {
+            display: flex;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .ai-window-header {
+            background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%);
+            color: white;
+            padding: 18px;
+            border-radius: 15px 15px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #7e22ce;
+        }
+        
+        .ai-window-header h2 {
+            font-size: 1.2rem;
+            margin: 0;
+            font-weight: 700;
+        }
+        
+        .ai-window-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            border-radius: 50%;
+        }
+        
+        .ai-window-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .ai-messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #fafafa;
+        }
+        
+        .ai-message {
+            display: flex;
+            margin-bottom: 8px;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .ai-message.user {
+            justify-content: flex-end;
+        }
+        
+        .ai-message-content {
+            max-width: 75%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            line-height: 1.4;
+            font-size: 0.95rem;
+            word-wrap: break-word;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .ai-message.user .ai-message-content {
+            background: #9333ea;
+            color: white;
+            border-radius: 18px 18px 6px 18px;
+            word-break: break-word;
+        }
+        
+        .ai-message.assistant .ai-message-content {
+            background: #e5e7eb;
+            color: #1f2937;
+            border-radius: 18px 18px 18px 6px;
+        }
+        
+        .ai-thinking {
+            color: #6b7280;
+            font-size: 0.9rem;
+            font-style: italic;
+            padding: 8px 12px;
+        }
+        
+        .ai-input-area {
+            padding: 14px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 10px;
+            background: white;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        .ai-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            transition: all 0.3s;
+            resize: none;
+        }
+        
+        .ai-input:focus {
+            outline: none;
+            border-color: #9333ea;
+            box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
+        }
+        
+        .ai-send-btn {
+            padding: 10px 18px;
+            background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(147, 51, 234, 0.3);
+        }
+        
+        .ai-send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(147, 51, 234, 0.4);
+        }
+        
+        .ai-send-btn:active {
+            transform: translateY(0);
+        }
+        
+        .ai-send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        /* ============ CHART ANALYSIS ============ */
+        .chart-analysis {
+            margin-top: 60px;
+            padding-top: 60px;
+            border-top: 2px solid #eee;
+        }
+        
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .chart-box {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+        }
+        
+        .chart-box:hover {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            transform: translateY(-5px);
+        }
+        
+        .chart-box h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+            font-weight: 700;
+        }
+        
+        .chart-box canvas {
+            max-height: 350px;
+        }
+        
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, #0368b3 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(4, 123, 213, 0.3);
+        }
+        
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .charts-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .summary-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .chart-box canvas {
+                max-height: 280px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-box {
+                padding: 15px;
+            }
+            
+            .chart-box h3 {
+                font-size: 1rem;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <!-- ============ NAVBAR ============ -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="javascript:location.reload()" class="logo">
+                <span>🛒</span>
+                <span>ShopSmart</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#categories">Categories</a></li>
+                <li><a href="#deals">Deals</a></li>
+                <li><a href="#features">Why Us</a></li>
+            </ul>
+            <div class="user-info">
+                <div id="userGreeting"></div>
+                <button id="logoutBtn" style="display: none;">Logout</button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- ============ HERO SECTION ============ -->
+    <section class="hero" id="heroSection">
+        <div class="hero-content">
+            <h1>🎯 Find Best Prices, Compare & Save!</h1>
+            <p>Search across 5+ top online stores and get the best deals instantly</p>
+            
+            <div class="hero-search">
+                <input type="text" id="product-input" placeholder="Search iPhone, Laptop, Shoes...">
+            </div>
+            
+            <div class="hero-buttons">
+                <button class="btn-primary" id="search-btn">🔍 Search Now</button>
+                <button class="btn-secondary" id="exploreBtn">Explore Deals</button>
+            </div>
+            
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">50M+</span>
+                    <span class="stat-label">Products</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Top Stores</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Support</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ============ CATEGORIES SECTION ============ -->
+    <section class="categories" id="categories">
+        <h2 class="section-title">Shop by Category</h2>
+        <p class="section-subtitle">Browse through our popular categories</p>
+        
+        <div class="categories-grid">
+            <div class="category-card" onclick="searchProduct('iPhone')">
+                <div class="category-icon">📱</div>
+                <div class="category-name">Mobiles</div>
+                <div class="category-count">2,500+ Products</div>
+            </div>
+            <div class="category-card" onclick="searchProduct('Laptop')">
+                <div class="category-icon">💻</div>
+                <div class="category-name">Laptops</div>
+                <div class="category-count">1,200+ Products</div>
+            </div>
+            <div class="category-card" onclick="searchProduct('Headphones')">
+                <div class="category-icon">🎧</div>
+                <div class="category-name">Audio</div>
+                <div class="category-count">800+ Products</div>
+            </div>
+            <div class="category-card" onclick="searchProduct('Shoes')">
+                <div class="category-icon">👟</div>
+                <div class="category-name">Fashion</div>
+                <div class="category-count">5,000+ Products</div>
+            </div>
+            <div class="category-card" onclick="searchProduct('Watch')">
+                <div class="category-icon">⌚</div>
+                <div class="category-name">Accessories</div>
+                <div class="category-count">3,000+ Products</div>
+            </div>
+            <div class="category-card" onclick="searchProduct('Camera')">
+                <div class="category-icon">📷</div>
+                <div class="category-name">Photography</div>
+                <div class="category-count">600+ Products</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ============ FEATURES SECTION ============ -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <h2 class="section-title">Why Choose ShopSmart?</h2>
+            <p class="section-subtitle">Get the best shopping experience with our smart features</p>
+            
+            <div class="features-grid">
+                <div class="feature-box">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Lightning Fast</h3>
+                    <p class="feature-text">Search and compare prices in seconds across multiple stores</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">💰</div>
+                    <h3 class="feature-title">Best Prices</h3>
+                    <p class="feature-text">Find the lowest price guaranteed with our smart comparison</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-title">AI Assistant</h3>
+                    <p class="feature-text">Get personalized recommendations from our smart AI</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">100% Safe</h3>
+                    <p class="feature-text">Your data is secure with us - trusted by millions</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">🎁</div>
+                    <h3 class="feature-title">Exclusive Deals</h3>
+                    <p class="feature-text">Access exclusive discounts and limited-time offers</p>
+                </div>
+                <div class="feature-box">
+                    <div class="feature-icon">⭐</div>
+                    <h3 class="feature-title">Top Rated</h3>
+                    <p class="feature-text">4.9★ rated by 100,000+ happy customers</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ============ DEALS SECTION ============ -->
+    <section class="deals" id="deals">
+        <h2 class="section-title">Featured Deals Today</h2>
+        <p class="section-subtitle">Limited time offers you can't miss</p>
+        
+        <div class="deals-grid">
+            <div class="deal-card" onclick="searchProduct('iPhone 15')">
+                <div class="deal-image">📱</div>
+                <div class="deal-badge">-15%</div>
+                <div class="deal-content">
+                    <div class="deal-title">iPhone 15</div>
+                    <div class="deal-price">
+                        <span class="deal-current">₹74,999</span>
+                        <span class="deal-original">₹89,999</span>
+                    </div>
+                    <button class="deal-btn">View Prices</button>
+                </div>
+            </div>
+            
+            <div class="deal-card" onclick="searchProduct('MacBook Air')">
+                <div class="deal-image">💻</div>
+                <div class="deal-badge">-10%</div>
+                <div class="deal-content">
+                    <div class="deal-title">MacBook Air M2</div>
+                    <div class="deal-price">
+                        <span class="deal-current">₹89,999</span>
+                        <span class="deal-original">₹99,999</span>
+                    </div>
+                    <button class="deal-btn">View Prices</button>
+                </div>
+            </div>
+            
+            <div class="deal-card" onclick="searchProduct('Sony Headphones')">
+                <div class="deal-image">🎧</div>
+                <div class="deal-badge">-25%</div>
+                <div class="deal-content">
+                    <div class="deal-title">Sony WH-CH720</div>
+                    <div class="deal-price">
+                        <span class="deal-current">₹7,999</span>
+                        <span class="deal-original">₹10,999</span>
+                    </div>
+                    <button class="deal-btn">View Prices</button>
+                </div>
+            </div>
+            
+            <div class="deal-card" onclick="searchProduct('Nike Shoes')">
+                <div class="deal-image">👟</div>
+                <div class="deal-badge">-30%</div>
+                <div class="deal-content">
+                    <div class="deal-title">Nike Air Max</div>
+                    <div class="deal-price">
+                        <span class="deal-current">₹6,999</span>
+                        <span class="deal-original">₹9,999</span>
+                    </div>
+                    <button class="deal-btn">View Prices</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ============ CTA SECTION ============ -->
+    <section class="cta" id="ctaSection">
+        <h2>Ready to Save Money? 💸</h2>
+        <p>Compare prices across top stores and never overpay again!</p>
+        <button class="btn-primary" onclick="document.getElementById('product-input').focus()">Start Shopping Now</button>
+    </section>
+    
+    <!-- ============ RESULTS SECTION ============ -->
+    <section class="results-section" id="resultsSection">
+        <button class="back-btn" onclick="goBack()">← Back to Home</button>
+        <h2 class="section-title" id="resultsTitle"></h2>
+        <div id="results-container" class="results-container"></div>
+        
+        <!-- ============ CHART ANALYSIS ============ -->
+        <div class="chart-analysis" id="chartAnalysis" style="display: none;">
+            <h2 class="section-title">📊 Price Analysis & Comparison</h2>
+            <p class="section-subtitle">Compare prices across all stores</p>
+            
+            <div class="charts-container">
+                <div class="chart-box">
+                    <h3>Price Comparison Chart</h3>
+                    <canvas id="priceChart"></canvas>
+                </div>
+                
+                <div class="chart-box">
+                    <h3>Store Pricing Breakdown</h3>
+                    <canvas id="pieChart"></canvas>
+                </div>
+                
+                <div class="chart-box">
+                    <h3>Discount Analysis</h3>
+                    <canvas id="discountChart"></canvas>
+                </div>
+                
+                <div class="chart-box">
+                    <h3>Best Deals Ranking</h3>
+                    <canvas id="rankingChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="summary-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="lowestPrice">₹0</div>
+                    <div class="stat-label">Lowest Price</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="highestPrice">₹0</div>
+                    <div class="stat-label">Highest Price</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="savingsAmount">₹0</div>
+                    <div class="stat-label">You Save</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avgDiscount">0%</div>
+                    <div class="stat-label">Avg Discount</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ============ AI ASSISTANT ============ -->
+    <button class="ai-assistant-btn" id="aiAssistantBtn">🛍️ AI Shop Assistant</button>
+    
+    <div class="ai-assistant-window" id="aiAssistantWindow">
+        <div class="ai-window-header">
+            <h2>AI Shopping Assistant</h2>
+            <button class="ai-window-close" id="aiWindowClose">&times;</button>
+        </div>
+        
+        <div class="ai-messages-container" id="aiMessagesContainer"></div>
+        
+        <div class="ai-input-area">
+            <input 
+                type="text" 
+                class="ai-input" 
+                id="aiInput" 
+                placeholder="Ask anything about products..."
+            >
+            <button class="ai-send-btn" id="aiSendBtn">Send</button>
+        </div>
+    </div>
+    
+    <script>
+        // ============ AUTHENTICATION ============
+        function checkLogin() {
+            const token = localStorage.getItem('shopsmart_token');
+            const user = localStorage.getItem('shopsmart_user');
+            
+            if (!token) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const userGreeting = document.getElementById('userGreeting');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const userName = user.split('@')[0];
+            
+            userGreeting.textContent = `👋 ${userName}`;
+            logoutBtn.style.display = 'inline-block';
+            
+            logoutBtn.addEventListener('click', () => {
+                localStorage.removeItem('shopsmart_token');
+                localStorage.removeItem('shopsmart_user');
+                window.location.href = 'login.html';
+            });
+        }
+        
+        // ============ INITIALIZE ============
+        document.addEventListener('DOMContentLoaded', () => {
+            checkLogin();
+            setupSearch();
+            setupAiAssistant();  // Changed from setupN8nAi()
+        });
+        
+        // ============ SEARCH SETUP ============
+        function setupSearch() {
+            document.getElementById('search-btn').addEventListener('click', performSearch);
+            document.getElementById('product-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            document.getElementById('exploreBtn').addEventListener('click', () => {
+                searchProduct('iPhone');
+            });
+        }
+        
+        function searchProduct(product) {
+            document.getElementById('product-input').value = product;
+            performSearch();
+        }
+        
+        function performSearch() {
+            const product = document.getElementById('product-input').value.trim();
+            
+            if (!product) {
+                alert('Please enter a product to search');
+                return;
+            }
+            
+            // Hide home sections
+            document.getElementById('heroSection').style.display = 'none';
+            document.getElementById('categories').style.display = 'none';
+            document.getElementById('features').style.display = 'none';
+            document.getElementById('deals').style.display = 'none';
+            document.getElementById('ctaSection').style.display = 'none';
+            
+            // Show results
+            document.getElementById('resultsSection').classList.add('active');
+            document.getElementById('resultsTitle').textContent = `Results for "${product}"`;
+            
+            // Start search
+            comparePrices(product);
+            
+            // Scroll to results
+            setTimeout(() => {
+                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+        
+        function goBack() {
+            document.getElementById('resultsSection').classList.remove('active');
+            document.getElementById('heroSection').style.display = 'block';
+            document.getElementById('categories').style.display = 'block';
+            document.getElementById('features').style.display = 'block';
+            document.getElementById('deals').style.display = 'block';
+            document.getElementById('ctaSection').style.display = 'block';
+            document.getElementById('product-input').value = '';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // ============ PRICE COMPARISON ============
+        async function comparePrices(product) {
+            const resultsContainer = document.getElementById('results-container');
+            resultsContainer.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>Searching for "${product}" across all stores...</p>
+                </div>
+            `;
+            
+            try {
+                const results = await Promise.all([
+                    fetchProduct('amazon', product),
+                    fetchProduct('flipkart', product),
+                    fetchProduct('ebay', product),
+                    fetchProduct('meesho', product),
+                    fetchProduct('myntra', product)
+                ]);
+                
+                displayResults({
+                    amazon: results[0],
+                    flipkart: results[1],
+                    ebay: results[2],
+                    meesho: results[3],
+                    myntra: results[4]
+                }, product);
+            } catch (error) {
+                console.error('Error:', error);
+                resultsContainer.innerHTML = `<div class="error">Error loading results. Please try again.</div>`;
+            }
+        }
+        
+        function displayResults(results, product) {
+            const resultsContainer = document.getElementById('results-container');
+            
+            // Find best deal
+            let bestDeal = null;
+            let bestPrice = Infinity;
+            let pricesForChart = [];
+            let discountsForChart = [];
+            
+            for (let site in results) {
+                if (!results[site].error && results[site].priceValue < bestPrice) {
+                    bestPrice = results[site].priceValue;
+                    bestDeal = site;
+                }
+                if (!results[site].error) {
+                    pricesForChart.push({
+                        site: site,
+                        price: results[site].priceValue,
+                        discount: results[site].discount || 0
+                    });
+                    discountsForChart.push({
+                        site: site,
+                        discount: results[site].discount || 0
+                    });
+                }
+            }
+            
+            let html = '';
+            
+            for (let site in results) {
+                html += generateResultCard(site, results[site], bestDeal === site);
+            }
+            
+            resultsContainer.innerHTML = html;
+            
+            // Display charts
+            setTimeout(() => {
+                displayCharts(pricesForChart, discountsForChart, results, product);
+            }, 500);
+        }
+        
+        function displayCharts(pricesData, discountsData, allResults, product) {
+            const chartAnalysis = document.getElementById('chartAnalysis');
+            chartAnalysis.style.display = 'block';
+            
+            // Calculate statistics
+            const prices = pricesData.map(p => p.price);
+            const lowestPrice = Math.min(...prices);
+            const highestPrice = Math.max(...prices);
+            const savingsAmount = highestPrice - lowestPrice;
+            const avgDiscount = (discountsData.reduce((sum, d) => sum + d.discount, 0) / discountsData.length).toFixed(1);
+            
+            // Update summary stats
+            document.getElementById('lowestPrice').textContent = '₹' + lowestPrice.toLocaleString('en-IN');
+            document.getElementById('highestPrice').textContent = '₹' + highestPrice.toLocaleString('en-IN');
+            document.getElementById('savingsAmount').textContent = '₹' + savingsAmount.toLocaleString('en-IN');
+            document.getElementById('avgDiscount').textContent = avgDiscount + '%';
+            
+            // Destroy existing charts if any
+            if (window.priceChartInstance) window.priceChartInstance.destroy();
+            if (window.pieChartInstance) window.pieChartInstance.destroy();
+            if (window.discountChartInstance) window.discountChartInstance.destroy();
+            if (window.rankingChartInstance) window.rankingChartInstance.destroy();
+            
+            // Price Comparison Chart
+            const priceCtx = document.getElementById('priceChart').getContext('2d');
+            window.priceChartInstance = new Chart(priceCtx, {
+                type: 'bar',
+                data: {
+                    labels: pricesData.map(p => capitalizeStore(p.site)),
+                    datasets: [{
+                        label: 'Price (₹)',
+                        data: pricesData.map(p => p.price),
+                        backgroundColor: [
+                            '#FF6B6B',
+                            '#4ECDC4',
+                            '#45B7D1',
+                            '#FFA07A',
+                            '#98D8C8'
+                        ],
+                        borderRadius: 8,
+                        borderSkipped: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return '₹' + value.toLocaleString('en-IN');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Pie Chart - Store Pricing
+            const pieCtx = document.getElementById('pieChart').getContext('2d');
+            window.pieChartInstance = new Chart(pieCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: pricesData.map(p => capitalizeStore(p.site)),
+                    datasets: [{
+                        data: pricesData.map(p => p.price),
+                        backgroundColor: [
+                            '#FF6B6B',
+                            '#4ECDC4',
+                            '#45B7D1',
+                            '#FFA07A',
+                            '#98D8C8'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+            
+            // Discount Analysis Chart
+            const discountCtx = document.getElementById('discountChart').getContext('2d');
+            window.discountChartInstance = new Chart(discountCtx, {
+                type: 'radar',
+                data: {
+                    labels: discountsData.map(d => capitalizeStore(d.site)),
+                    datasets: [{
+                        label: 'Discount %',
+                        data: discountsData.map(d => d.discount),
+                        borderColor: '#047bd5',
+                        backgroundColor: 'rgba(4, 123, 213, 0.1)',
+                        pointBackgroundColor: '#047bd5',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+            
+            // Ranking Chart - Best to Worst Deal
+            const sortedPrices = [...pricesData].sort((a, b) => a.price - b.price);
+            const rankingCtx = document.getElementById('rankingChart').getContext('2d');
+            window.rankingChartInstance = new Chart(rankingCtx, {
+                type: 'bar',
+                data: {
+                    labels: sortedPrices.map(p => capitalizeStore(p.site)),
+                    datasets: [{
+                        label: 'Price Ranking',
+                        data: sortedPrices.map(p => p.price),
+                        backgroundColor: sortedPrices.map((p, i) => {
+                            if (i === 0) return '#27ae60'; // Best deal - Green
+                            if (i === sortedPrices.length - 1) return '#e74c3c'; // Worst - Red
+                            return '#f39c12'; // Others - Orange
+                        }),
+                        borderRadius: 8,
+                        borderSkipped: false,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                callback: function(value) {
+                                    return '₹' + value.toLocaleString('en-IN');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            chartAnalysis.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        function capitalizeStore(store) {
+            const storeNames = {
+                amazon: 'Amazon',
+                flipkart: 'Flipkart',
+                ebay: 'eBay',
+                meesho: 'Meesho',
+                myntra: 'Myntra'
+            };
+            return storeNames[store] || store;
+        }
+        
+        function generateResultCard(site, data, isBestDeal) {
+            const siteNames = {
+                amazon: 'Amazon',
+                flipkart: 'Flipkart',
+                ebay: 'eBay',
+                meesho: 'Meesho',
+                myntra: 'Myntra'
+            };
+            
+            if (data.error) {
+                return `
+                    <div class="result-card ${site}">
+                        <div class="site-header">
+                            <div class="site-name">${siteNames[site]}</div>
+                        </div>
+                        <div class="error">${data.error}</div>
+                    </div>
+                `;
+            }
+            
+            return `
+                <div class="result-card ${site}">
+                    ${isBestDeal ? '<div class="best-deal-badge">✓ Best Deal</div>' : ''}
+                    <div class="site-header">
+                        <div class="site-name">${siteNames[site]}</div>
+                    </div>
+                    
+                    <div class="product-name">${data.name}</div>
+                    
+                    <div class="price-container">
+                        <span class="current-price">${data.price}</span>
+                        ${data.originalPrice ? `<span class="original-price">${data.originalPrice}</span>` : ''}
+                        ${data.discount ? `<span class="discount-badge">${data.discount}% OFF</span>` : ''}
+                    </div>
+                    
+                    <a href="${data.url}" target="_blank" class="visit-btn">
+                        View on ${siteNames[site]}
+                    </a>
+                </div>
+            `;
+        }
+        
+        // ============ FETCH PRODUCTS ============
+        async function fetchProduct(site, product) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    try {
+                        const lowerProduct = product.toLowerCase();
+                        let minPrice = 5000;
+                        let maxPrice = 50000;
+                        
+                        // Price ranges based on product type
+                        if (lowerProduct.includes('iphone')) {
+                            minPrice = 40000;
+                            maxPrice = lowerProduct.includes('pro max') ? 159900 : 89900;
+                        } else if (lowerProduct.includes('macbook')) {
+                            minPrice = 89900;
+                            maxPrice = 200000;
+                        } else if (lowerProduct.includes('laptop')) {
+                            minPrice = 30000;
+                            maxPrice = 150000;
+                        } else if (lowerProduct.includes('phone') || lowerProduct.includes('smartphone')) {
+                            minPrice = 10000;
+                            maxPrice = 100000;
+                        } else if (lowerProduct.includes('headphone') || lowerProduct.includes('audio')) {
+                            minPrice = 2000;
+                            maxPrice = 30000;
+                        } else if (lowerProduct.includes('shoe')) {
+                            minPrice = 2000;
+                            maxPrice = 15000;
+                        } else if (lowerProduct.includes('watch')) {
+                            minPrice = 5000;
+                            maxPrice = 50000;
+                        } else if (lowerProduct.includes('camera')) {
+                            minPrice = 20000;
+                            maxPrice = 150000;
+                        }
+                        
+                        // Platform specific pricing
+                        const multipliers = {
+                            amazon: 1.0,
+                            flipkart: 0.95,
+                            ebay: 1.05,
+                            meesho: 0.80,
+                            myntra: 0.85
+                        };
+                        
+                        minPrice = Math.floor(minPrice * multipliers[site]);
+                        maxPrice = Math.floor(maxPrice * multipliers[site]);
+                        
+                        const finalPrice = Math.floor(Math.random() * (maxPrice - minPrice) + minPrice);
+                        const hasDiscount = Math.random() < 0.5;
+                        const discount = hasDiscount ? Math.floor(Math.random() * 30) + 5 : null;
+                        const originalPrice = hasDiscount ? finalPrice : null;
+                        const displayPrice = hasDiscount ? Math.floor(finalPrice * (1 - discount / 100)) : finalPrice;
+                        
+                        const formatPrice = (amount) => '₹' + amount.toLocaleString('en-IN');
+                        
+                        const urls = {
+                            amazon: `https://www.amazon.in/s?k=${encodeURIComponent(product)}`,
+                            flipkart: `https://www.flipkart.com/search?q=${encodeURIComponent(product)}`,
+                            ebay: `https://www.ebay.com/sch/i.html?_nkw=${encodeURIComponent(product)}`,
+                            meesho: `https://www.meesho.com/search?q=${encodeURIComponent(product)}`,
+                            myntra: `https://www.myntra.com/search?q=${encodeURIComponent(product)}`
+                        };
+                        
+                        resolve({
+                            name: product,
+                            price: formatPrice(displayPrice),
+                            priceValue: displayPrice,
+                            originalPrice: originalPrice ? formatPrice(originalPrice) : null,
+                            discount: discount,
+                            url: urls[site],
+                            error: null
+                        });
+                    } catch (error) {
+                        resolve({
+                            error: 'Could not fetch price',
+                            name: product,
+                            priceValue: Infinity
+                        });
+                    }
+                }, 500 + Math.random() * 800);
+            });
+        }
+        
+        // ============ AI ASSISTANT ============
+        class AiAssistant {
+            constructor() {
+                this.messages = [];
+                this.loading = false;
+                this.input = '';
+                this.init();
+            }
+            
+            init() {
+                const btn = document.getElementById('aiAssistantBtn');
+                const window = document.getElementById('aiAssistantWindow');
+                const closeBtn = document.getElementById('aiWindowClose');
+                const sendBtn = document.getElementById('aiSendBtn');
+                const inputField = document.getElementById('aiInput');
+                
+                btn.addEventListener('click', () => {
+                    window.classList.toggle('active');
+                });
+                
+                closeBtn.addEventListener('click', () => {
+                    window.classList.remove('active');
+                });
+                
+                sendBtn.addEventListener('click', () => this.sendMessage());
+                inputField.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+                
+                this.addMessage('Hello! 👋 I\'m your AI Shopping Assistant.\n\nI can help you with:\n✓ Product recommendations\n✓ Price comparisons\n✓ Product features & specs\n✓ Shopping advice\n\nWhat would you like to know?', 'assistant');
+            }
+            
+            addMessage(text, role) {
+                this.messages.push({ role, text });
+                this.renderMessages();
+            }
+            
+            renderMessages() {
+                const container = document.getElementById('aiMessagesContainer');
+                container.innerHTML = '';
+                
+                this.messages.forEach((msg) => {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = `ai-message ${msg.role}`;
+                    
+                    const content = document.createElement('div');
+                    content.className = 'ai-message-content';
+                    content.textContent = msg.text;
+                    
+                    messageDiv.appendChild(content);
+                    container.appendChild(messageDiv);
+                });
+                
+                container.scrollTop = container.scrollHeight;
+            }
+            
+            async sendMessage() {
+                const inputField = document.getElementById('aiInput');
+                const input = inputField.value.trim();
+                
+                if (!input || this.loading) return;
+                
+                this.addMessage(input, 'user');
+                inputField.value = '';
+                this.loading = true;
+                
+                const container = document.getElementById('aiMessagesContainer');
+                const thinkingDiv = document.createElement('div');
+                thinkingDiv.className = 'ai-thinking';
+                thinkingDiv.textContent = 'Thinking...';
+                thinkingDiv.id = 'thinking-indicator';
+                container.appendChild(thinkingDiv);
+                container.scrollTop = container.scrollHeight;
+                
+                try {
+                    // Using free HuggingFace API - Gemma 2B model
+                    const response = await fetch(
+                        'https://api-inference.huggingface.co/models/google/gemma-2b-it',
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                inputs: this.buildPrompt(input),
+                                parameters: {
+                                    max_length: 300,
+                                    temperature: 0.7,
+                                }
+                            })
+                        }
+                    );
+                    
+                    const data = await response.json();
+                    
+                    let reply = 'Sorry, I could not understand that!';
+                    
+                    if (Array.isArray(data) && data.length > 0 && data[0].generated_text) {
+                        reply = data[0].generated_text;
+                        
+                        // Clean up the response
+                        if (reply.includes('[/INST]')) {
+                            reply = reply.split('[/INST]')[1].trim();
+                        }
+                        
+                        // Limit response length
+                        if (reply.length > 500) {
+                            reply = reply.substring(0, 500) + '...';
+                        }
+                    } else if (data.error) {
+                        reply = `API Error: ${data.error}. Please try again.`;
+                    }
+                    
+                    // Remove thinking indicator
+                    const thinking = document.getElementById('thinking-indicator');
+                    if (thinking) thinking.remove();
+                    
+                    this.addMessage(reply, 'assistant');
+                } catch (error) {
+                    console.error('Error:', error);
+                    
+                    // Remove thinking indicator
+                    const thinking = document.getElementById('thinking-indicator');
+                    if (thinking) thinking.remove();
+                    
+                    this.addMessage('Sorry, I encountered an error. Please try again later.', 'assistant');
+                }
+                
+                this.loading = false;
+            }
+            
+            buildPrompt(input) {
+                const lowerInput = input.toLowerCase();
+                
+                // Add context for shopping queries
+                let systemPrompt = 'You are a helpful shopping assistant. ';
+                
+                if (lowerInput.includes('price') || lowerInput.includes('cost')) {
+                    systemPrompt += 'Help with price comparisons and finding deals.';
+                } else if (lowerInput.includes('feature') || lowerInput.includes('spec')) {
+                    systemPrompt += 'Help with product features and specifications.';
+                } else if (lowerInput.includes('recommend') || lowerInput.includes('suggest')) {
+                    systemPrompt += 'Provide product recommendations.';
+                } else if (lowerInput.includes('iphone') || lowerInput.includes('phone') || 
+                          lowerInput.includes('laptop') || lowerInput.includes('headphone') ||
+                          lowerInput.includes('watch') || lowerInput.includes('camera') ||
+                          lowerInput.includes('shoe')) {
+                    systemPrompt += 'Provide helpful information about products.';
+                }
+                
+                return `${systemPrompt}\n\nUser: ${input}\n\nAssistant:`;
+            }
+        }
+        
+        // Initialize AI Assistant
+        function setupAiAssistant() {
+            new AiAssistant();
+        }
+    </script>
+</body>
+</html>

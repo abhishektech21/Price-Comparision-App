@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopSmart - Login</title>
+    <style>
+        :root {
+            --primary: #047bd5;
+            --secondary: #2c3e50;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --light: #f5f7fa;
+            --dark: #2c3e50;
+            --white: #ffffff;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, #0368b3 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 420px;
+            padding: 40px;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .login-header h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .login-header p {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(4, 123, 213, 0.2);
+        }
+        
+        input[type="email"]:invalid:not(:placeholder-shown) {
+            border-color: var(--danger);
+        }
+        
+        .password-toggle {
+            position: relative;
+        }
+        
+        .toggle-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #7f8c8d;
+            user-select: none;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+        }
+        
+        input[type="checkbox"] {
+            margin-right: 6px;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+        }
+        
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+        
+        .login-btn:hover {
+            background: #0368b3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(4, 123, 213, 0.3);
+        }
+        
+        .login-btn:active {
+            transform: translateY(0);
+        }
+        
+        .login-btn.loading {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 0.95rem;
+        }
+        
+        .signup-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .error-message {
+            background-color: rgba(231, 76, 60, 0.1);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 0.9rem;
+        }
+        
+        .error-message.show {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        .success-message {
+            background-color: rgba(39, 174, 96, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 0.9rem;
+        }
+        
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .demo-info {
+            background-color: #ecf7ff;
+            border: 1px solid #b3e0ff;
+            color: #0368b3;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            
+            .login-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .remember-forgot {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo">🛒</div>
+            <h1>ShopSmart</h1>
+            <p>Welcome back! Please login to your account</p>
+        </div>
+        
+        <div class="demo-info">
+            <strong>Demo Credentials:</strong><br>
+            Email: demo@shopsmart.com<br>
+            Password: demo123
+        </div>
+        
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage"></div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    placeholder="Enter your email"
+                    required
+                    autocomplete="email"
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="password-toggle">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Enter your password"
+                        required
+                        autocomplete="current-password"
+                    >
+                    <span class="toggle-icon" id="togglePassword">👁️</span>
+                </div>
+            </div>
+            
+            <div class="remember-forgot">
+                <label class="remember-me">
+                    <input type="checkbox" id="rememberMe" name="rememberMe">
+                    <span>Remember me</span>
+                </label>
+                <a href="forgot-password.html" class="forgot-password">Forgot password?</a>
+            </div>
+            
+            <button type="submit" class="login-btn" id="loginBtn">Login to ShopSmart</button>
+        </form>
+        
+        <div class="signup-link">
+            Don't have an account? <a href="signup.html">Sign up here</a>
+        </div>
+    </div>
+    
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+        const loginBtn = document.getElementById('loginBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        const rememberMe = document.getElementById('rememberMe');
+        
+        // Toggle password visibility
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+        
+        // Load saved email if "Remember me" was checked
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedEmail = localStorage.getItem('shopsmart_email');
+            const wasRemembered = localStorage.getItem('shopsmart_remember') === 'true';
+            
+            if (savedEmail && wasRemembered) {
+                emailInput.value = savedEmail;
+                rememberMe.checked = true;
+            }
+        });
+        
+        // Handle form submission
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            clearMessages();
+            
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            
+            // Validate inputs
+            if (!email || !password) {
+                showError('Please fill in all fields');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                showError('Please enter a valid email address');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters');
+                return;
+            }
+            
+            // Show loading state
+            loginBtn.disabled = true;
+            loginBtn.classList.add('loading');
+            loginBtn.textContent = 'Logging in...';
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Demo credentials
+                if (email === 'demo@shopsmart.com' && password === 'demo123') {
+                    // Save email if remember me is checked
+                    if (rememberMe.checked) {
+                        localStorage.setItem('shopsmart_email', email);
+                        localStorage.setItem('shopsmart_remember', 'true');
+                    } else {
+                        localStorage.removeItem('shopsmart_email');
+                        localStorage.removeItem('shopsmart_remember');
+                    }
+                    
+                    // Store auth token
+                    localStorage.setItem('shopsmart_token', 'demo_token_' + Date.now());
+                    localStorage.setItem('shopsmart_user', email);
+                    
+                    showSuccess('Login successful! Redirecting...');
+                    
+                    // Redirect after delay
+                    setTimeout(() => {
+                        window.location.href = 'mini.html';
+                    }, 1500);
+                } else {
+                    showError('Invalid email or password');
+                    loginBtn.disabled = false;
+                    loginBtn.classList.remove('loading');
+                    loginBtn.textContent = 'Login to ShopSmart';
+                }
+            }, 1500);
+        });
+        
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.add('show');
+            errorMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.classList.add('show');
+            successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        function clearMessages() {
+            errorMessage.classList.remove('show');
+            successMessage.classList.remove('show');
+        }
+    </script>
+</body>
+</html>
